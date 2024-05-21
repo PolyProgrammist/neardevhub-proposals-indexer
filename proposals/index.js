@@ -191,7 +191,6 @@ async function indexProposalsOp(
 
     let linked_rfp = args.proposal.snapshot.linked_rfp;
     let linked_proposals = args.proposal.snapshot.linked_proposals;
-    console.log("linked rfp: ", linked_rfp);
 
     let proposal_snapshot = {
       ...args.proposal.snapshot,
@@ -445,10 +444,7 @@ async function checkAndUpdateLinkedProposals(proposal_id, new_linked_rfp, blockH
     if (last_snapshot != undefined) {
       latest_linked_rfp_id = last_snapshot.linked_rfp;
     }
-
-    console.log("new linked rfp", new_linked_rfp);
-    console.log("latest linked rfp", latest_linked_rfp_id);
-
+    
     if (new_linked_rfp !== latest_linked_rfp_id) {
       if (new_linked_rfp !== undefined && new_linked_rfp !== null) {
         console.log(`Adding linked_rfp ${new_linked_rfp} to proposal ${proposal_id}`)
@@ -654,7 +650,8 @@ function getLatestObject(array, blockTimestamp) {
   if (array == null || array.length === 0) {
     return null;
   }
-  let result = array.reduce((prev, current) => (prev.ts > current.ts && prev.ts < blockTimestamp) ? prev : current);
+  console.log(array.length);
+  let result = array.reduce((prev, current) => (prev.ts > current.ts && prev.ts < blockTimestamp || current.ts >= blockTimestamp) ? prev : current);
   if (result == null || result.ts >= blockTimestamp) {
     return null;
   }
